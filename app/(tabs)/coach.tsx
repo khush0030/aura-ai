@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
-import { getReplyFromThread, getReplyFromScreenshot, getToneProfile, getTodayUsage } from '../../lib/api';
+import { getReplyFromThread, getReplyFromScreenshot, getToneProfile, getTodayUsage, REPLY_LABELS } from '../../lib/api';
 import { LoadingSkeleton } from '../../components/LoadingSkeleton';
 import { UsageBanner } from '../../components/UsageBanner';
 import { COPY } from '../../constants/copy';
@@ -172,6 +172,9 @@ export default function CoachScreen() {
                 onPress={() => handleCopy(reply, i)}
                 activeOpacity={0.7}
               >
+                <View style={styles.replyLabelRow}>
+                  <Text style={styles.replyLabel}>{REPLY_LABELS[i] ?? ''}</Text>
+                </View>
                 <Text style={styles.replyText}>{reply}</Text>
                 <Text style={styles.replyHint}>
                   {copiedIndex === i ? COPY.bioAnalyser.copySuccess : COPY.coach.tapToCopy}
@@ -235,6 +238,8 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 12,
   },
+  replyLabelRow: { marginBottom: 8 },
+  replyLabel: { color: '#7C3AED', fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 },
   replyText: { color: '#FFF', fontSize: 16, lineHeight: 24, marginBottom: 8 },
-  replyHint: { color: '#7C3AED', fontSize: 12, fontWeight: '600' },
+  replyHint: { color: '#555', fontSize: 12 },
 });

@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { StyleSheet } from 'react-native';
+import { Text } from 'react-native';
 
 export default function TabsLayout() {
   return (
@@ -16,35 +16,41 @@ export default function TabsLayout() {
         },
         tabBarActiveTintColor: '#7C3AED',
         tabBarInactiveTintColor: '#555',
-        tabBarLabelStyle: { fontSize: 12, fontWeight: '600' },
+        tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
-          title: 'Bio Analyser',
-          tabBarIcon: ({ color }) => <TabIcon emoji="✨" color={color} />,
+          title: 'Home',
+          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, opacity: color === '#7C3AED' ? 1 : 0.5 }}>🏠</Text>,
         }}
       />
       <Tabs.Screen
         name="coach"
         options={{
           title: 'Coach',
-          tabBarIcon: ({ color }) => <TabIcon emoji="💬" color={color} />,
+          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, opacity: color === '#7C3AED' ? 1 : 0.5 }}>💬</Text>,
+        }}
+      />
+      <Tabs.Screen
+        name="pickup"
+        options={{
+          title: 'Pickup',
+          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, opacity: color === '#7C3AED' ? 1 : 0.5 }}>⚡</Text>,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color }) => <TabIcon emoji="👤" color={color} />,
+          tabBarIcon: ({ color }) => <Text style={{ fontSize: 20, opacity: color === '#7C3AED' ? 1 : 0.5 }}>👤</Text>,
         }}
       />
+      {/* Hidden tabs — accessible via navigation, not shown in tab bar */}
+      <Tabs.Screen name="bio" options={{ href: null }} />
+      <Tabs.Screen name="optimise" options={{ href: null }} />
+      <Tabs.Screen name="index" options={{ href: null }} />
     </Tabs>
   );
-}
-
-function TabIcon({ emoji, color }: { emoji: string; color: string }) {
-  const { Text } = require('react-native');
-  return <Text style={{ fontSize: 20, opacity: color === '#7C3AED' ? 1 : 0.5 }}>{emoji}</Text>;
 }

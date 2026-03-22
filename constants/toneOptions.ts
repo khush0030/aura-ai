@@ -1,6 +1,7 @@
 export type CommunicationStyle = 'casual' | 'confident' | 'witty' | 'chill';
 export type HumorLevel = 'dry' | 'playful' | 'none';
 export type EnergyLevel = 'high' | 'medium' | 'low';
+export type Intent = 'casual' | 'serious' | 'chatting';
 
 export interface ToneOption {
   value: string;
@@ -26,4 +27,10 @@ export const ENERGY_LEVELS: ToneOption[] = [
   { value: 'high', label: 'High energy', description: 'Enthusiastic, expressive', emoji: '⚡' },
   { value: 'medium', label: 'Balanced', description: 'Normal, measured', emoji: '⚖️' },
   { value: 'low', label: 'Low-key', description: 'Calm, understated', emoji: '🌙' },
+];
+
+export const INTENTS: ToneOption[] = [
+  { value: 'casual', label: 'Casual fun', description: 'Keep it light and fun', emoji: '🎉' },
+  { value: 'serious', label: 'Something serious', description: 'Looking for a real connection', emoji: '💞' },
+  { value: 'chatting', label: 'Just chatting', description: 'No pressure, see where it goes', emoji: '☕' },
 ];

@@ -10,16 +10,18 @@ import {
   COMMUNICATION_STYLES,
   HUMOR_LEVELS,
   ENERGY_LEVELS,
+  INTENTS,
   ToneOption,
 } from '../constants/toneOptions';
 
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 5;
 
 export default function OnboardingScreen() {
   const [step, setStep] = useState(1);
   const [communicationStyle, setCommunicationStyle] = useState('');
   const [humorLevel, setHumorLevel] = useState('');
   const [energyLevel, setEnergyLevel] = useState('');
+  const [intent, setIntent] = useState('');
   const [samplePhrase, setSamplePhrase] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,6 +30,7 @@ export default function OnboardingScreen() {
     if (step === 1) return !!communicationStyle;
     if (step === 2) return !!humorLevel;
     if (step === 3) return !!energyLevel;
+    if (step === 4) return !!intent;
     return true;
   };
 
@@ -43,6 +46,7 @@ export default function OnboardingScreen() {
         communication_style: communicationStyle,
         humor_level: humorLevel,
         energy_level: energyLevel,
+        intent: intent,
         sample_phrase: samplePhrase || null,
       });
       router.replace('/(tabs)');
@@ -93,16 +97,18 @@ export default function OnboardingScreen() {
           {step === 1 && COPY.onboarding.step1Title}
           {step === 2 && COPY.onboarding.step2Title}
           {step === 3 && COPY.onboarding.step3Title}
-          {step === 4 && COPY.onboarding.step4Title}
+          {step === 4 && 'What are you looking for?'}
+          {step === 5 && COPY.onboarding.step4Title}
         </Text>
-        {step === 4 && (
+        {step === 5 && (
           <Text style={styles.subtitle}>{COPY.onboarding.step4Subtitle}</Text>
         )}
 
         {step === 1 && renderOptions(COMMUNICATION_STYLES, communicationStyle, setCommunicationStyle)}
         {step === 2 && renderOptions(HUMOR_LEVELS, humorLevel, setHumorLevel)}
         {step === 3 && renderOptions(ENERGY_LEVELS, energyLevel, setEnergyLevel)}
-        {step === 4 && (
+        {step === 4 && renderOptions(INTENTS, intent, setIntent)}
+        {step === 5 && (
           <TextInput
             style={styles.sampleInput}
             placeholder={COPY.onboarding.step4Placeholder}
@@ -126,8 +132,8 @@ export default function OnboardingScreen() {
             {loading
               ? COPY.onboarding.saving
               : step === TOTAL_STEPS
-              ? COPY.onboarding.finishButton
-              : COPY.onboarding.nextButton}
+            ? COPY.onboarding.finishButton
+            : COPY.onboarding.nextButton}
           </Text>
         </TouchableOpacity>
 
