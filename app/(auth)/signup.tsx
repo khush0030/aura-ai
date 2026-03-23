@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { signUp } from '../../lib/api';
+import { Analytics } from '../../lib/analytics';
 import { COPY } from '../../constants/copy';
 
 export default function SignupScreen() {
@@ -26,6 +27,7 @@ export default function SignupScreen() {
     setError(null);
     try {
       await signUp(email.trim(), password);
+      Analytics.signUp();
       router.replace('/onboarding');
     } catch (err: any) {
       setError(err.message || COPY.common.error);

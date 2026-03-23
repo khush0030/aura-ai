@@ -6,6 +6,7 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { getReplyFromThread, getReplyFromScreenshot, getToneProfile, getTodayUsage, REPLY_LABELS } from '../../lib/api';
+import { Analytics } from '../../lib/analytics';
 import { LoadingSkeleton } from '../../components/LoadingSkeleton';
 import { UsageBanner } from '../../components/UsageBanner';
 import { UpgradeModal } from '../../components/UpgradeModal';
@@ -42,8 +43,9 @@ export default function CoachScreen() {
       const result = await getReplyFromThread(toneProfile, thread.trim());
       setReplies(result);
       setUsage((u) => u + 1);
+      Analytics.replyFromThread();
     } catch (err: any) {
-      if (err.message === 'LIMIT_REACHED') { setShowUpgrade(true); }
+      if (err.message === 'LIMIT_REACHED') { setShowUpgrade(true); Analytics.limitHit('coach'); }
       else { setError(COPY.common.error); }
     } finally {
       setLoading(false);
@@ -83,6 +85,7 @@ export default function CoachScreen() {
       const suggestions = await getReplyFromScreenshot(toneProfile, base64);
       setReplies(suggestions);
       setUsage((u) => u + 1);
+      Analytics.replyFromScreenshot();
     } catch (err: any) {
       if (err.message === 'LIMIT_REACHED') { setShowUpgrade(true); }
       else { setError(COPY.common.error); }
@@ -94,6 +97,7 @@ export default function CoachScreen() {
   const handleCopy = (text: string, index: number) => {
     Clipboard.setString(text);
     setCopiedIndex(index);
+    Analytics.replyCopied(REPLY_LABELS[index] ?? 'unknown');
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 

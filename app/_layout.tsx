@@ -3,6 +3,9 @@ import { Stack, router } from 'expo-router';
 import { View, ActivityIndicator } from 'react-native';
 import { supabase } from '../lib/supabase';
 import { getToneProfile } from '../lib/api';
+import { initSentry } from '../lib/sentry';
+
+initSentry();
 
 export default function RootLayout() {
   const [checking, setChecking] = useState(true);

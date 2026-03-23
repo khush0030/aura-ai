@@ -14,19 +14,42 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "ai.aura.app"
+      "bundleIdentifier": "ai.aura.app",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Aura AI needs photo access to read your conversation screenshots.",
+        "NSCameraUsageDescription": "Aura AI needs camera access to photograph your conversations."
+      },
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "privacyManifests": {
+        "NSPrivacyAccessedAPITypes": [
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+          }
+        ]
+      }
     },
     "plugins": [
       "expo-router",
       [
         "expo-image-picker",
         {
-          "photosPermission": "Aura AI needs photo access to read your conversation screenshots."
+          "photosPermission": "Aura AI needs photo access to read your conversation screenshots.",
+          "cameraPermission": "Aura AI needs camera access to photograph your conversations."
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "your-eas-project-id"
+      }
     }
   }
 }
