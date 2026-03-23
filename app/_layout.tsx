@@ -32,7 +32,8 @@ export default function RootLayout() {
       } else {
         await routeAfterAuth();
       }
-    } catch {
+    } catch (e) {
+      // No Supabase connection — show splash anyway for preview
       router.replace('/splash');
     } finally {
       setChecking(false);
