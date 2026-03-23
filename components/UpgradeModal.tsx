@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet, Modal,
-  TextInput, KeyboardAvoidingView, Platform, Alert,
+  TextInput, KeyboardAvoidingView, Platform,
 } from 'react-native';
+import { Analytics } from '../lib/analytics';
 
 interface UpgradeModalProps {
   visible: boolean;
@@ -13,9 +14,13 @@ export function UpgradeModal({ visible, onDismiss }: UpgradeModalProps) {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
+  useEffect(() => {
+    if (visible) Analytics.upgradeModalSeen();
+  }, [visible]);
+
   const handleJoinWaitlist = () => {
     if (!email.trim()) return;
-    // In v1.1 this will hook into RevenueCat / waitlist API
+    Analytics.waitlistJoined();
     setSubmitted(true);
   };
 
@@ -76,7 +81,7 @@ export function UpgradeModal({ visible, onDismiss }: UpgradeModalProps) {
             </>
           )}
 
-          <TouchableOpacity onPress={onDismiss} style={styles.dismissButton}>
+          <TouchableOpacity onPress={() => { Analytics.upgradeDismissed(); onDismiss(); }} style={styles.dismissButton}>
             <Text style={styles.dismissText}>Maybe later</Text>
           </TouchableOpacity>
         </View>

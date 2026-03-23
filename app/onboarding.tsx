@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { saveToneProfile } from '../lib/api';
+import { Analytics } from '../lib/analytics';
 import { COPY } from '../constants/copy';
 import {
   COMMUNICATION_STYLES,
@@ -18,6 +19,10 @@ const TOTAL_STEPS = 5;
 
 export default function OnboardingScreen() {
   const [step, setStep] = useState(1);
+
+  useEffect(() => {
+    Analytics.onboardingStarted();
+  }, []);
   const [communicationStyle, setCommunicationStyle] = useState('');
   const [humorLevel, setHumorLevel] = useState('');
   const [energyLevel, setEnergyLevel] = useState('');
@@ -49,6 +54,7 @@ export default function OnboardingScreen() {
         intent: intent,
         sample_phrase: samplePhrase || null,
       });
+      Analytics.onboardingCompleted(communicationStyle, humorLevel, energyLevel, intent);
       router.replace('/building-aura');
     } catch (err: any) {
       setError(err.message || COPY.common.error);

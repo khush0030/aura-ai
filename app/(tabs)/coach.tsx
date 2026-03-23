@@ -18,6 +18,7 @@ export default function CoachScreen() {
   const [loading, setLoading] = useState(false);
   const [readingScreenshot, setReadingScreenshot] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [optionalNote, setOptionalNote] = useState('');
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [usage, setUsage] = useState(0);
   const [showUpgrade, setShowUpgrade] = useState(false);
@@ -82,7 +83,7 @@ export default function CoachScreen() {
         encoding: FileSystem.EncodingType.Base64,
       });
 
-      const suggestions = await getReplyFromScreenshot(toneProfile, base64);
+      const suggestions = await getReplyFromScreenshot(toneProfile, base64, optionalNote || undefined);
       setReplies(suggestions);
       setUsage((u) => u + 1);
       Analytics.replyFromScreenshot();
@@ -138,6 +139,15 @@ export default function CoachScreen() {
           onChangeText={setThread}
           multiline
           textAlignVertical="top"
+          editable={!loading && !readingScreenshot}
+        />
+
+        <TextInput
+          style={styles.noteInput}
+          placeholder='Optional: any direction? e.g. "keep it flirty" or "ask her out"'
+          placeholderTextColor="#444"
+          value={optionalNote}
+          onChangeText={setOptionalNote}
           editable={!loading && !readingScreenshot}
         />
 
@@ -243,4 +253,8 @@ const styles = StyleSheet.create({
   replyLabel: { color: '#7C3AED', fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 },
   replyText: { color: '#FFF', fontSize: 16, lineHeight: 24, marginBottom: 8 },
   replyHint: { color: '#555', fontSize: 12 },
+  noteInput: {
+    backgroundColor: '#151515', borderRadius: 10, borderWidth: 1, borderColor: '#222',
+    color: '#888', fontSize: 13, padding: 12, marginBottom: 14,
+  },
 });

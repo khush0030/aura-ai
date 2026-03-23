@@ -4,6 +4,7 @@ import {
   ScrollView, SafeAreaView, ActivityIndicator, Clipboard,
 } from 'react-native';
 import { optimiseProfile, getTodayUsage } from '../../lib/api';
+import { Analytics } from '../../lib/analytics';
 import { LoadingSkeleton } from '../../components/LoadingSkeleton';
 import { UsageBanner } from '../../components/UsageBanner';
 
@@ -38,6 +39,7 @@ export default function OptimiseScreen() {
       const res = await optimiseProfile(bio.trim(), platform, intentNote.trim() || undefined);
       setResult(res);
       setUsage((u) => u + 1);
+      Analytics.profileOptimised(platform);
     } catch (err: any) {
       setError(err.message === 'LIMIT_REACHED'
         ? "You've hit today's limit of 10 free requests. Come back tomorrow."

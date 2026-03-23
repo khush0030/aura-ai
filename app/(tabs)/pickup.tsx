@@ -4,6 +4,7 @@ import {
   ScrollView, SafeAreaView, ActivityIndicator, Clipboard,
 } from 'react-native';
 import { generatePickupLines, getTodayUsage } from '../../lib/api';
+import { Analytics } from '../../lib/analytics';
 import { LoadingSkeleton } from '../../components/LoadingSkeleton';
 import { UsageBanner } from '../../components/UsageBanner';
 
@@ -30,6 +31,7 @@ export default function PickupScreen() {
       const result = await generatePickupLines(context.trim() || undefined, toneMode);
       setLines(result);
       setUsage((u) => u + 1);
+      Analytics.pickupLinesGenerated(toneMode);
     } catch (err: any) {
       setError(err.message === 'LIMIT_REACHED'
         ? "You've hit today's limit of 10 free requests. Come back tomorrow."
@@ -42,6 +44,7 @@ export default function PickupScreen() {
   const handleCopy = (text: string, index: number) => {
     Clipboard.setString(text);
     setCopiedIndex(index);
+    Analytics.pickupLineCopied(index);
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
@@ -119,7 +122,7 @@ export default function PickupScreen() {
 
             <TouchableOpacity
               style={styles.regenerateButton}
-              onPress={handleGenerate}
+              onPress={() => { Analytics.pickupLinesRegenerated(); handleGenerate(); }}
               disabled={loading}
             >
               <Text style={styles.regenerateText}>↻  Regenerate</Text>

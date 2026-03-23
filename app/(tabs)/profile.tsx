@@ -123,11 +123,20 @@ export default function ProfileScreen() {
         <View style={styles.linksSection}>
           <TouchableOpacity
             style={styles.linkRow}
-            onPress={() => Linking.openURL('https://aura-ai.app/privacy')}
+            onPress={() => Linking.openURL('https://aura-ai-legal-96mzs3x9f-oltaflock-ai.vercel.app#privacy')}
           >
             <Text style={styles.linkText}>{COPY.profile.privacyPolicy}</Text>
             <Text style={styles.linkArrow}>→</Text>
           </TouchableOpacity>
+          <View style={[styles.linkRow, { borderTopWidth: 1, borderTopColor: '#1A1A1A' }]}>
+            <TouchableOpacity
+              style={styles.linkRow}
+              onPress={() => Linking.openURL('https://aura-ai-legal-96mzs3x9f-oltaflock-ai.vercel.app#terms')}
+            >
+            <Text style={styles.linkText}>Terms of Service</Text>
+            <Text style={styles.linkArrow}>→</Text>
+          </TouchableOpacity>
+            </TouchableOpacity>
         </View>
 
         {/* Sign out */}

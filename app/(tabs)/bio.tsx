@@ -6,6 +6,7 @@ import {
   ScrollView, SafeAreaView, ActivityIndicator,
 } from 'react-native';
 import { analyseBio, generateOpeners, getToneProfile, getTodayUsage } from '../../lib/api';
+import { Analytics } from '../../lib/analytics';
 import { BioAnalysisResult } from '../../lib/prompts';
 import { OpenerCard } from '../../components/OpenerCard';
 import { HookChip } from '../../components/HookChip';
@@ -36,6 +37,7 @@ export default function BioScreen() {
       const result = await analyseBio(bio.trim());
       setAnalysis(result);
       setUsage((u) => u + 1);
+      Analytics.bioAnalysed(result.hooks.length);
     } catch (err: any) {
       setError(err.message === 'LIMIT_REACHED' ? COPY.common.limitReached : COPY.common.error);
     } finally {
@@ -53,6 +55,7 @@ export default function BioScreen() {
       const result = await generateOpeners(toneProfile, bio, analysis.hooks);
       setOpeners(result);
       setUsage((u) => u + 1);
+      Analytics.openersGenerated();
     } catch (err: any) {
       setError(err.message === 'LIMIT_REACHED' ? COPY.common.limitReached : COPY.common.error);
     } finally {
