@@ -49,7 +49,7 @@ export default function OnboardingScreen() {
         intent: intent,
         sample_phrase: samplePhrase || null,
       });
-      router.replace('/(tabs)');
+      router.replace('/building-aura');
     } catch (err: any) {
       setError(err.message || COPY.common.error);
     } finally {

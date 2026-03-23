@@ -12,7 +12,7 @@ export default function RootLayout() {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_OUT') {
-        router.replace('/(auth)/login');
+        router.replace('/splash');
       } else if (event === 'SIGNED_IN' && session) {
         await routeAfterAuth();
       }
@@ -22,13 +22,18 @@ export default function RootLayout() {
   }, []);
 
   const checkAuthAndRoute = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      router.replace('/(auth)/login');
-    } else {
-      await routeAfterAuth();
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        router.replace('/splash');
+      } else {
+        await routeAfterAuth();
+      }
+    } catch {
+      router.replace('/splash');
+    } finally {
+      setChecking(false);
     }
-    setChecking(false);
   };
 
   const routeAfterAuth = async () => {
@@ -37,10 +42,10 @@ export default function RootLayout() {
       if (!profile) {
         router.replace('/onboarding');
       } else {
-        router.replace('/(tabs)');
+        router.replace('/(tabs)/home');
       }
     } catch {
-      router.replace('/(tabs)');
+      router.replace('/(tabs)/home');
     }
   };
 
@@ -54,9 +59,11 @@ export default function RootLayout() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="splash" />
       <Stack.Screen name="(auth)" />
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="onboarding" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="building-aura" options={{ presentation: 'modal', gestureEnabled: false }} />
     </Stack>
   );
 }

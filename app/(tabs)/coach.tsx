@@ -8,6 +8,7 @@ import * as FileSystem from 'expo-file-system';
 import { getReplyFromThread, getReplyFromScreenshot, getToneProfile, getTodayUsage, REPLY_LABELS } from '../../lib/api';
 import { LoadingSkeleton } from '../../components/LoadingSkeleton';
 import { UsageBanner } from '../../components/UsageBanner';
+import { UpgradeModal } from '../../components/UpgradeModal';
 import { COPY } from '../../constants/copy';
 
 export default function CoachScreen() {
@@ -18,6 +19,7 @@ export default function CoachScreen() {
   const [error, setError] = useState<string | null>(null);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [usage, setUsage] = useState(0);
+  const [showUpgrade, setShowUpgrade] = useState(false);
 
   useEffect(() => {
     getTodayUsage().then(setUsage).catch(() => {});
@@ -41,11 +43,8 @@ export default function CoachScreen() {
       setReplies(result);
       setUsage((u) => u + 1);
     } catch (err: any) {
-      if (err.message === 'LIMIT_REACHED') {
-        setError(COPY.common.limitReached);
-      } else {
-        setError(COPY.common.error);
-      }
+      if (err.message === 'LIMIT_REACHED') { setShowUpgrade(true); }
+      else { setError(COPY.common.error); }
     } finally {
       setLoading(false);
     }
@@ -85,11 +84,8 @@ export default function CoachScreen() {
       setReplies(suggestions);
       setUsage((u) => u + 1);
     } catch (err: any) {
-      if (err.message === 'LIMIT_REACHED') {
-        setError(COPY.common.limitReached);
-      } else {
-        setError(COPY.common.error);
-      }
+      if (err.message === 'LIMIT_REACHED') { setShowUpgrade(true); }
+      else { setError(COPY.common.error); }
     } finally {
       setReadingScreenshot(false);
     }
@@ -103,6 +99,7 @@ export default function CoachScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <UpgradeModal visible={showUpgrade} onDismiss={() => setShowUpgrade(false)} />
       <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
         <Text style={styles.title}>{COPY.coach.title}</Text>
         <Text style={styles.subtitle}>{COPY.coach.subtitle}</Text>
